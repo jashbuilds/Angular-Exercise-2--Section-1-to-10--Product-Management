@@ -1,0 +1,89 @@
+<div class="container-fluid mt-7 mb-5 px-sm-5 px-3">
+    <div class="row">
+        @for(item of sortedProducts(); track item.id) {
+        <div class="col-md-6 col-sm-6 col-lg-3 d-flex justify-content-center g-4">
+
+            @if(isLoading()) {
+            <div class="card shadow border-0 p-3 rounded placeholder-glow">
+                <div class="position-relative placeholder">
+                    <img
+                        class="card-img-top img-fluid rounded"
+                        [class]="isLoading() ? 'placeholder' : ''"
+                        alt="{{ item.name }} Image" />
+                    <button
+                        class="btn border-0 bg-transparent position-absolute top-0 end-0"
+                        (click)="toggleLike(item.id)">
+                    </button>
+                </div>
+
+                <div class="card-body pt-3 px-1 d-flex flex-column">
+                    <p class="h4 card-title py-2 placeholder">{{ item.name
+                        }}</p>
+                    <p class="card-text text-secondary placeholder">
+                        {{ item.description }}
+                    </p>
+                    <p
+                        class="card-text mt-auto m-0 fs-4 fw-semibold placeholder">
+                        ${{ item.price.toFixed(2) }}
+                    </p>
+                    <p class="fs-6 text-muted fw-semibold m-0 placeholder"></p>
+
+                    <div
+                        class="text-muted card-text text-end fw-medium d-flex flex-column justify-content-between placeholder">
+                    </div>
+                </div>
+                <div
+                    class="card-footer border-0 bg-transparent d-flex justify-content-center placeholder">
+                    <button class="btn btn-primary col-12 h-100"></button>
+                </div>
+            </div>
+            } @else {
+            <div class="card shadow border-0 p-3 rounded">
+                <div class="position-relative">
+                    <img src="{{ item.imageUrl }}"
+                        class="card-img-top rounded img-fluid"
+                        [class]="isLoading() ? 'placeholder' : ''"
+                        alt="{{ item.name }} Image" />
+                    <button
+                        class="btn border-0 position-absolute top-0 end-0 likeBtn"
+                        (click)="toggleLike(item.id)">
+                        <img
+                            [src]="item.isLiked ? 'icons/favorite-filled-red.svg' : 'icons/favorite-icon.svg'"
+                            alt="favorite icon" width="23" height="23" />
+                    </button>
+                </div>
+
+                <div class="card-body pt-3 px-1 d-flex flex-column">
+                    <p class="h4 card-title py-2">{{ item.name }}</p>
+                    <p class="card-text text-secondary">{{ item.description
+                        }}</p>
+
+                    <div class="d-flex justify-content-between align-items-center mt-5">
+                        <div>
+                            <p
+                                class="card-text mt-auto m-0 fs-4 fw-semibold">${{
+                                item.price.toFixed(2) }}</p>
+                            <p class="fs-6 text-muted fw-semibold m-0">Price</p>
+                        </div>
+
+                        <div
+                            class="text-muted card-text text-end fw-medium d-flex flex-column justify-content-between">
+                            <p class="m-0">Item added on:</p>
+                            <p class="m-0">{{ DateNow() | date: 'shortDate'
+                                }}</p>
+                        </div>
+                    </div>
+
+                </div>
+                <div
+                    class="card-footer border-0 bg-transparent d-flex justify-content-center">
+                    <button class="btn btn-primary">Add to Cart</button>
+                </div>
+            </div>
+            }
+
+        </div>
+        }
+
+    </div>
+</div>

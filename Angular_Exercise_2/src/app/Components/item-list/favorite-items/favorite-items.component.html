@@ -1,0 +1,75 @@
+<div class="container mt-7">
+    <div class="row">
+        <div class="col-12">
+            <p
+                class="h2 text-secondary d-flex justify-content-start align-items-center">Favourite
+                Items
+                <img src="icons/favorite-filled-red.svg" alt="favourite-icon"
+                    width="30" height="30" class="ms-2" />
+            </p>
+
+            @if(favouriteItems().length === 0) {
+            <div
+                class="d-flex flex-column justify-content-center align-items-center mt-5">
+                <img src="icons/empty-box.svg" alt="empty-favorite"
+                    width="150"
+                    height="150" />
+                <p class="h5 text-secondary mt-3">No favourite items yet.</p>
+            </div>
+            } @else {
+            <div class="table-responsive rounded-3 mt-4 shadow">
+
+                <table class="table">
+                    <thead class="table-success">
+                        <tr>
+                            <th scope="col" class="fw-medium"></th>
+                            <th scope="col"
+                                class="cursor-pointer text-nowrap fw-medium p-3">PRODUCT
+                                DETAILS</th>
+                            <th scope="col" class="fw-medium p-3">CATEGORY</th>
+                            <th scope="col" class="fw-medium p-3">PRICE</th>
+                        </tr>
+                    </thead>
+                    @for(item of favouriteItems(); track item.id)
+                    {
+                    <tbody>
+
+                        <tr>
+                            <td class="fw-medium align-content-center">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <button class="btn border-0" (click)="removeLikedItem(item.id)">
+                                        <img src="icons/remove-icon.svg"
+                                            alt="remove-favorite" width="20"
+                                            height="20" />
+                                    </button>
+                                </div>
+
+                            </td>
+                            <td class="fw-medium p-3 d-flex align-items-center">
+                                <img src="{{ item.imageUrl }}"
+                                    alt="product-image" width="75" height="75"
+                                    class="rounded me-3" />
+                                <div class="mw-75">
+                                    <p class="m-0">{{ item.name }}</p>
+                                    <p class="text-secondary m-0">{{
+                                        item.description }}</p>
+                                </div>
+                            </td>
+                            <td class="fw-medium p-3 align-content-center">{{
+                                item.category }}</td>
+                            <td class="fw-medium p-3 align-content-center">${{
+                                item.price.toFixed(2)
+                                }}</td>
+
+                        </tr>
+
+                    </tbody>
+                    }
+                </table>
+
+            </div>
+            }
+
+        </div>
+    </div>
+</div>

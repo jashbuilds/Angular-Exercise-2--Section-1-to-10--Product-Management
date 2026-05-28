@@ -1,0 +1,19 @@
+.fs-6 {
+    font-size: 0.875rem;
+}
+
+.card {
+    transition: all 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.likeBtn {
+    transition: all 0.2s ease-in-out;
+}
+
+.likeBtn:hover {
+    transform: translateY(-2px);
+}

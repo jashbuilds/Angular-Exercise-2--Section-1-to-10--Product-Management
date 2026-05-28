@@ -1,0 +1,43 @@
+<nav class="navbar navbar-expand-sm bg-light shadow-sm p-3 fixed-top">
+    <div class="container-fluid">
+
+        <a class="navbar-brand fs-4 text-primary fw-medium"
+            routerLink="/items">Welcome to Store!</a>
+
+        <button class="navbar-toggler border border-0" type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarToggler"
+            aria-controls="navbarToggler" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarToggler">
+            <ul
+                class="navbar-nav ms-auto mb-2 mt-3 mt-sm-0 mb-lg-0 d-flex flex-row justify-content-around align-items-center gap-3">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page"
+                        routerLink="/favourites" routerLinkActive
+                        #rla="routerLinkActive">
+                        <img
+                            [src]="rla.isActive ? 'icons/favorite-filled-red.svg' : 'icons/favorite-icon.svg'"
+                            alt="Favorite Icon" class="position-relative"
+                            width="25" height="25" />
+                        @if(favouriteItems().length > 0) {
+                        <span
+                            class="position-absolute top-25 start-75 translate-middle badge rounded-pill bg-info bg-danger">
+                            {{ favouriteItems().length }}
+                        </span>
+                        }
+
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/cart">
+                        <img src="icons/cart-icon.svg" alt="Cart Icon"
+                            width="25" height="25" />
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
