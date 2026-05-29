@@ -1,0 +1,7 @@
+.navbar {
+    background: linear-gradient(180deg, var(--purple) 25%, var(--medium-slate-blue) 100%);
+}
+
+.headingSubtext {
+    margin-top: -10px;
+}

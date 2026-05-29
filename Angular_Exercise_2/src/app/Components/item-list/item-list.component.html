@@ -1,15 +1,24 @@
 <div class="container-fluid mt-7 mb-5 px-sm-5 px-3">
     <div class="row">
+        <div class="col-12">
+            <p
+                class="h2 mt-5 text-secondary d-flex justify-content-start align-items-center">Products
+                list
+                <img src="icons/product-list-icon.svg" alt="favourite-icon"
+                    width="30" height="30" class="ms-2" />
+            </p>
+        </div>
         @for(item of sortedProducts(); track item.id) {
-        <div class="col-md-6 col-sm-6 col-lg-3 d-flex justify-content-center g-4">
+        <div
+            class="col-md-4 col-sm-6 col-lg-3 col-12 d-flex justify-content-center g-md-4 g-sm-3 g-4">
 
             @if(isLoading()) {
-            <div class="card shadow border-0 p-3 rounded placeholder-glow">
-                <div class="position-relative placeholder">
+            <div class="card shadow-lg border-0 p-3 rounded-4 placeholder-glow">
+                <div class="position-relative placeholder rounded-4 bg-light">
                     <img
-                        class="card-img-top img-fluid rounded"
+                        class="card-img-top img-fluid rounded-4"
                         [class]="isLoading() ? 'placeholder' : ''"
-                        alt="{{ item.name }} Image" />
+                        alt="{{ item.name }} Image" width="320" height="320" />
                     <button
                         class="btn border-0 bg-transparent position-absolute top-0 end-0"
                         (click)="toggleLike(item.id)">
@@ -17,13 +26,14 @@
                 </div>
 
                 <div class="card-body pt-3 px-1 d-flex flex-column">
-                    <p class="h4 card-title py-2 placeholder">{{ item.name
+                    <p class="h4 py-2 placeholder bg-light text-white">{{
+                        item.name
                         }}</p>
                     <p class="card-text text-secondary placeholder">
                         {{ item.description }}
                     </p>
                     <p
-                        class="card-text mt-auto m-0 fs-4 fw-semibold placeholder">
+                        class="card-text m-0 fs-4 fw-semibold placeholder">
                         ${{ item.price.toFixed(2) }}
                     </p>
                     <p class="fs-6 text-muted fw-semibold m-0 placeholder"></p>
@@ -32,52 +42,61 @@
                         class="text-muted card-text text-end fw-medium d-flex flex-column justify-content-between placeholder">
                     </div>
                 </div>
-                <div
-                    class="card-footer border-0 bg-transparent d-flex justify-content-center placeholder">
-                    <button class="btn btn-primary col-12 h-100"></button>
-                </div>
             </div>
             } @else {
-            <div class="card shadow border-0 p-3 rounded">
+            <div class="card shadow-lg border-1 border-info p-3 rounded-4">
                 <div class="position-relative">
                     <img src="{{ item.imageUrl }}"
-                        class="card-img-top rounded img-fluid"
+                        class="card-img-top rounded-4 img-fluid"
                         [class]="isLoading() ? 'placeholder' : ''"
                         alt="{{ item.name }} Image" />
                     <button
-                        class="btn border-0 position-absolute top-0 end-0 likeBtn"
+                        class="btn border-0 position-absolute mt-1 top-0 end-0 likeBtn"
                         (click)="toggleLike(item.id)">
                         <img
-                            [src]="item.isLiked ? 'icons/favorite-filled-red.svg' : 'icons/favorite-icon.svg'"
+                            [src]="item.isLiked ? 'icons/favorite-filled-red.svg' : 'icons/favorite-icon-dark.svg'"
                             alt="favorite icon" width="23" height="23" />
                     </button>
+                    <span
+                        class="m-0 position-absolute m-2 top-0 start-0 bg-gradient bg-dark-purple text-white px-3 py-1 rounded-pill">{{
+                        item.category }}</span>
                 </div>
 
-                <div class="card-body pt-3 px-1 d-flex flex-column">
-                    <p class="h4 card-title py-2">{{ item.name }}</p>
-                    <p class="card-text text-secondary">{{ item.description
-                        }}</p>
+                <div class="card-body p-0 d-flex flex-column">
+                    <div
+                        class="d-flex align-items-center justify-content-between mt-2">
+                        <p class="h4 card-title">{{ item.name }}</p>
+                        <span class="fs-6 text-muted">05/28/2026</span>
+                    </div>
+                    
+                    <p class="card-text text-secondary mb-1 itemDescription">{{ item.description }}</p>
 
-                    <div class="d-flex justify-content-between align-items-center mt-5">
-                        <div>
-                            <p
-                                class="card-text mt-auto m-0 fs-4 fw-semibold">${{
-                                item.price.toFixed(2) }}</p>
-                            <p class="fs-6 text-muted fw-semibold m-0">Price</p>
-                        </div>
+                    <hr class="mt-auto">
+
+                    <div
+                        class="d-flex flex-row justify-content-between align-items-center gap-2 flex-wrap-reverse">
+
+                        <p
+                            class="card-text mt-auto m-0 fs-5 fw-semibold">{{
+                            item.price.toFixed(2) | currency }}</p>
 
                         <div
-                            class="text-muted card-text text-end fw-medium d-flex flex-column justify-content-between">
-                            <p class="m-0">Item added on:</p>
-                            <p class="m-0">{{ DateNow() | date: 'shortDate'
-                                }}</p>
+                            class="text-end fw-medium fs-5 d-flex flex-row align-items-center gap-2">
+                            <img src="icons/stock.svg" alt="stock" width="25"
+                                height="25">
+                            <span class="m-0">{{ item.stock }}</span>
                         </div>
                     </div>
 
                 </div>
                 <div
-                    class="card-footer border-0 bg-transparent d-flex justify-content-center">
-                    <button class="btn btn-primary">Add to Cart</button>
+                    class="card-footer mt-2 p-0 border-0 bg-transparent d-flex justify-content-between align-itms-center gap-2">
+                    <button
+                        class="addBtn bg-medium-slate-blue border-0 text-white w-100 rounded-pill d-flex justify-content-center align-items-center">Add
+                        to Cart
+                        <img src="icons/plus.svg" alt="Add to Cart Icon"
+                            width="25" height="25" />
+                    </button>
                 </div>
             </div>
             }

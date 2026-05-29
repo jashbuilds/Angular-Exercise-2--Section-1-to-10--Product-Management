@@ -1,9 +1,41 @@
+/* Custom Classes */
+
 .fs-6 {
     font-size: 0.875rem;
 }
 
-.card {
+.addBtn {
     transition: all 0.3s ease-in-out;
+    opacity: 0;
+    max-height: 0;
+    transform: translateY(6px);
+}
+
+.card:hover .addBtn {
+    opacity: 1;
+    max-height: 100px;
+    transform: translateY(0);
+    padding: 10px 0px 10px 0px;
+}
+
+.itemDescription {
+    opacity: 1;
+    /* max-height: auto; */
+    transition: transform 0.3s ease-in-out;
+}
+
+.card:hover .itemDescription {
+    opacity: 0;
+    max-height: 0px;
+    transform: translateY(2px);
+}
+
+.addBtn:hover {
+    background: #6c2bc7;
+}
+
+.card {
+    transition: all 0.3s ease;
 }
 
 .card:hover {

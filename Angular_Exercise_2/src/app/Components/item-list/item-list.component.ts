@@ -1,11 +1,11 @@
 import { AfterViewInit, Component, computed, inject, signal, viewChild } from '@angular/core';
 import { ProductListService } from '../../Services/product-list.service';
-import { DatePipe } from '@angular/common';
 import { FavoriteItemsComponent } from './favorite-items/favorite-items.component';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'app-item-list',
-  imports: [DatePipe],
+  imports: [CurrencyPipe],
   templateUrl: './item-list.component.html',
   styleUrl: './item-list.component.css'
 })

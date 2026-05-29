@@ -1,10 +1,77 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 
+:root {
+    --violet: #E382F9;
+    --blush-pop: #FFB2E6;
+    --plum: #F7AEF8;
+    --bright-lavender: #B388EB;
+    --medium-slate-blue: #9A52FF;
+    --purple: #682ce1;
+    --dark-purple: #8447ffa2;
+    --sky-blue: #d9f4fb;
+    --light-gray: rgb(202, 200, 200);
+    --gray: rgb(220, 214, 214);
+}
+
 * {
     font-family: "Outfit", sans-serif;
 }
 
+/* Custom Classes */ 
+
+.bg-violet {
+    background-color: var(--violet);
+}
+
+.bg-blush-pop {
+    background-color: var(--blush-pop);
+}
+
+.bg-plum {
+    background-color: var(--plum);
+}
+
+.bg-bright-lavender {
+    background-color: var(--bright-lavender);
+}
+
+.bg-medium-slate-blue {
+    background-color: var(--medium-slate-blue);
+}
+
+.bg-purple {
+    background-color: var(--purple);
+}
+
+.bg-sky-blue {
+    background-color: var(--sky-blue);
+}
+
+.text-color-skyblue {
+    color: var(--sky-blue);
+}
+
+.bg-gray {
+    background-color: var(--light-gray);
+}
+
+.bg-light-gray {
+    background-color: var(--gray);
+}
+
+.bg-dark-purple {
+    background-color: var(--dark-purple);
+}
+
 .mt-7 {
     margin-top: 6rem;
+}
+
+.fs-6 {
+    font-size: 0.9rem;
+}
+
+.fs-7 {
+    font-size: 0.75rem;
 }

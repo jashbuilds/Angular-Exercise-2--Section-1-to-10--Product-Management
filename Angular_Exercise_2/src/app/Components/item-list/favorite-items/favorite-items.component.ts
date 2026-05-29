@@ -1,9 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { ProductListService } from '../../../Services/product-list.service';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'app-favorite-items',
-  imports: [],
+  imports: [CurrencyPipe],
   templateUrl: './favorite-items.component.html',
   styleUrl: './favorite-items.component.css'
 })

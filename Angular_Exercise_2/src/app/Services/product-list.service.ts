@@ -17,16 +17,18 @@ export class ProductListService {
     price: 10.99,
     description: 'Stay active and comfortable with our latest sports wear collection.',
     imageUrl: 'images/product1.jpg',
-    isLiked: false
+    isLiked: false,
+    stock: 200
   },
   {
     id: 2,
     category: 'Eyewear',
-    name: 'RayBan Subglasses',
+    name: 'RayBan Sunglasses',
     price: 12.99,
     description: 'Elevate your style with our latest collection of sunglasses.',
     imageUrl: 'images/product2.jpg',
-    isLiked: false
+    isLiked: false,
+    stock: 340
   },
   {
     id: 3,
@@ -35,7 +37,8 @@ export class ProductListService {
     price: 15.99,
     description: 'Experience the power of technology with our latest gadgets and accessories.',
     imageUrl: 'images/product3.jpg',
-    isLiked: false
+    isLiked: false,
+    stock: 80
   },
   {
     id: 4,
@@ -44,7 +47,8 @@ export class ProductListService {
     price: 8.99,
     description: 'Upgrade your wardrobe with our latest collection of fashion and accessories.',
     imageUrl: 'images/product4.jpg',
-    isLiked: false
+    isLiked: false,
+    stock: 500
   },
   {
     id: 5,
@@ -53,7 +57,8 @@ export class ProductListService {
     price: 9.99,
     description: 'Experience the thrill of skateboarding with our latest collection of skateboards and accessories.',
     imageUrl: 'images/product5.jpg',
-    isLiked: false
+    isLiked: false,
+    stock: 389
   },
   {
     id: 6,
@@ -62,7 +67,8 @@ export class ProductListService {
     price: 11.99,
     description: 'Experience the ultimate gaming experience with our latest collection of gaming consoles and accessories.',
     imageUrl: 'images/product6.jpg',
-    isLiked: false
+    isLiked: false,
+    stock: 50
   },
   {
     id: 7,
@@ -71,7 +77,8 @@ export class ProductListService {
     price: 13.99,
     description: 'Immerse yourself in sound with our latest collection of wireless TWS earbuds.',
     imageUrl: 'images/product7.jpg',
-    isLiked: false
+    isLiked: false,
+    stock: 750
   }, 
   {
     id: 8,
@@ -80,7 +87,8 @@ export class ProductListService {
     price: 14.99,
     description: 'Stay connected and track your fitness with our latest collection of smartwatches.',
     imageUrl: 'images/product8.jpg',
-    isLiked: false
+    isLiked: false,
+    stock: 243
   }
   ])
 }

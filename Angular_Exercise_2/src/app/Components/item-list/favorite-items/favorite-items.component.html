@@ -1,6 +1,6 @@
-<div class="container mt-7">
+<div class="container-fluid mt-7 px-sm-5 px-3">
     <div class="row">
-        <div class="col-12">
+        <div class="col-12 mt-5">
             <p
                 class="h2 text-secondary d-flex justify-content-start align-items-center">Favourite
                 Items
@@ -10,7 +10,7 @@
 
             @if(favouriteItems().length === 0) {
             <div
-                class="d-flex flex-column justify-content-center align-items-center mt-5">
+                class="d-flex flex-column justify-content-center align-items-center min-vh-60">
                 <img src="icons/empty-box.svg" alt="empty-favorite"
                     width="150"
                     height="150" />
@@ -20,7 +20,7 @@
             <div class="table-responsive rounded-3 mt-4 shadow">
 
                 <table class="table">
-                    <thead class="table-success">
+                    <thead class="table-active">
                         <tr>
                             <th scope="col" class="fw-medium"></th>
                             <th scope="col"
@@ -55,10 +55,13 @@
                                         item.description }}</p>
                                 </div>
                             </td>
+                            <td class="fw-medium p-3 align-content-center">
+                                <span class="bg-light-gray p-2 rounded-3 text-muted">
+                                    {{ item.category }}
+                                </span>
+                            </td>
                             <td class="fw-medium p-3 align-content-center">{{
-                                item.category }}</td>
-                            <td class="fw-medium p-3 align-content-center">${{
-                                item.price.toFixed(2)
+                                item.price.toFixed(2) | currency
                                 }}</td>
 
                         </tr>
