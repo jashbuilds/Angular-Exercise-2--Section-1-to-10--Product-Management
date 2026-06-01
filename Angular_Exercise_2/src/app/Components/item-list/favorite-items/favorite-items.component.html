@@ -1,6 +1,6 @@
-<div class="container-fluid mt-7 px-sm-5 px-3">
+<div class="container-fluid mt-7 px-sm-5 px-3 pb-4">
     <div class="row">
-        <div class="col-12 mt-5">
+        <div class="col-12 mt-5 d-flex justify-content-between flex-wrap">
             <p
                 class="h2 text-secondary d-flex justify-content-start align-items-center">Favourite
                 Items
@@ -8,16 +8,37 @@
                     width="30" height="30" class="ms-2" />
             </p>
 
-            @if(favouriteItems().length === 0) {
-            <div
-                class="d-flex flex-column justify-content-center align-items-center min-vh-60">
-                <img src="icons/empty-box.svg" alt="empty-favorite"
-                    width="150"
-                    height="150" />
-                <p class="h5 text-secondary mt-3">No favourite items yet.</p>
+            @if(favouriteItems().length > 0) {
+            <div class="d-flex flex-row gap-0 viewIcon">
+                <button class="border-0 p-2 shadow rounded-start-2" [class]="!isListView() ? 'bg-medium-slate-blue bg-gradient' : 'bg-light'" (click)="toggleGridView()">
+                    <img [src]="!isListView() ? 'icons/grid-view-icon-light.svg' : 'icons/grid-view-icon-dark.svg'" alt="grid-dark"
+                        width="25" height="25" 
+                        class="cursor-pointer" />
+                </button>
+
+                <button class="border-0 p-2 shadow rounded-end-2" [class]="isListView() ? 'bg-medium-slate-blue bg-gradient' : 'bg-light'" (click)="toggleListView()">
+                    <img [src]="isListView() ? 'icons/list-view-icon-light.svg' : 'icons/list-view-icon-dark.svg'" alt="list-dark"
+                        width="25" height="25"
+                        class="cursor-pointer" />
+                </button>
             </div>
-            } @else {
-            <div class="table-responsive rounded-3 mt-4 shadow">
+            }
+
+        </div>
+
+        @if(favouriteItems().length === 0) {
+        <div
+            class="d-flex flex-column justify-content-center align-items-center min-vh-60">
+            <img src="icons/empty-box.svg" alt="empty-favorite"
+                width="150"
+                height="150" />
+            <p class="h5 text-secondary mt-3">No favourite items yet.</p>
+        </div>
+        } @else {
+
+        @if(isListView()) {
+        <div class="col-12">
+            <div class="favItems table-responsive rounded-4 my-4 shadow">
 
                 <table class="table">
                     <thead class="table-active">
@@ -28,16 +49,20 @@
                                 DETAILS</th>
                             <th scope="col" class="fw-medium p-3">CATEGORY</th>
                             <th scope="col" class="fw-medium p-3">PRICE</th>
+                            <th scope="col" class="fw-medium p-3">STOCK</th>
                         </tr>
                     </thead>
+
                     @for(item of favouriteItems(); track item.id)
                     {
                     <tbody>
 
                         <tr>
                             <td class="fw-medium align-content-center">
-                                <div class="d-flex align-items-center justify-content-center">
-                                    <button class="btn border-0" (click)="removeLikedItem(item.id)">
+                                <div
+                                    class="d-flex align-items-center justify-content-center">
+                                    <button class="btn border-0"
+                                        (click)="removeLikedItem(item.id)">
                                         <img src="icons/remove-icon.svg"
                                             alt="remove-favorite" width="20"
                                             height="20" />
@@ -56,14 +81,26 @@
                                 </div>
                             </td>
                             <td class="fw-medium p-3 align-content-center">
-                                <span class="bg-light-gray p-2 rounded-3 text-muted">
-                                    {{ item.category }}
-                                </span>
+                                <div
+                                    class="d-flex align-items-center justify-content-center">
+                                    <span
+                                        class="bg-light-gray px-2 py-1 rounded-3 text-muted">
+                                        {{ item.category }}
+                                    </span>
+
+                                </div>
                             </td>
                             <td class="fw-medium p-3 align-content-center">{{
                                 item.price.toFixed(2) | currency
                                 }}</td>
-
+                            <td class="fw-medium p-3 align-content-center">
+                                <div
+                                    class="d-flex align-items-center justify-content-center gap-2">
+                                    {{ item.stock }}
+                                    <img src="icons/stock.svg" alt="Stock"
+                                        width="20" height="20" class="me-1" />
+                                </div>
+                            </td>
                         </tr>
 
                     </tbody>
@@ -71,8 +108,67 @@
                 </table>
 
             </div>
-            }
-
         </div>
+
+        } @else {
+
+        @for(item of favouriteItems(); track item.id) {
+
+        <div class="col-12 col-sm-6 col-md-3 col-lg-3 g-4">
+            <div class="card shadow-lg border-1 border-info p-3 rounded-4 h-100">
+                <div class="position-relative">
+                    <img src="{{ item.imageUrl }}"
+                        class="card-img-top rounded-4 img-fluid"
+                        alt="{{ item.name }} Image" />
+                    <button
+                        class="btn border-0 position-absolute mt-1 top-0 end-0 likeBtn"
+                        (click)="removeLikedItem(item.id)">
+                        <img
+                            [src]="item.isLiked ? 'icons/favorite-filled-red.svg' : 'icons/favorite-icon-dark.svg'"
+                            alt="favorite icon" width="23" height="23" />
+                    </button>
+                    <span
+                        class="m-0 position-absolute m-2 top-0 start-0 bg-gradient bg-dark-purple text-white px-3 py-1 rounded-pill">{{
+                        item.category }}</span>
+                </div>
+
+                <div class="card-body p-0 d-flex flex-column">
+                    <div
+                        class="d-flex align-items-center justify-content-between mt-2">
+                        <p class="h4 card-title">{{ item.name }}</p>
+                        <span class="fs-6 text-muted">05/28/2026</span>
+                    </div>
+
+                    <div class="desc-wrapper">
+                        <p
+                            class="card-text text-secondary mb-1 itemDescription">{{
+                            item.description }}</p>
+                    </div>
+
+                    <hr class="mt-auto">
+
+                    <div
+                        class="d-flex flex-row justify-content-between align-items-center gap-2 flex-wrap-reverse">
+
+                        <p class="card-text mt-auto m-0 fs-5 fw-semibold">{{
+                            item.price.toFixed(2) | currency }}</p>
+
+                        <div
+                            class="text-end fw-medium fs-5 d-flex flex-row align-items-center gap-2">
+                            <img src="icons/stock.svg" alt="stock"
+                                width="25"
+                                height="25">
+                            <span class="m-0">{{ item.stock }}</span>
+                        </div>
+                    </div>
+
+                </div>
+                
+            </div>
+        </div>
+        }
+        }
+        }
+
     </div>
 </div>

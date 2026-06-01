@@ -1,10 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ProductListService } from '../../../Services/product-list.service';
 import { CurrencyPipe } from '@angular/common';
+import { RouterLinkActive } from "@angular/router";
 
 @Component({
   selector: 'app-favorite-items',
-  imports: [CurrencyPipe],
+  imports: [CurrencyPipe, RouterLinkActive],
   templateUrl: './favorite-items.component.html',
   styleUrl: './favorite-items.component.css'
 })
@@ -12,6 +13,8 @@ export class FavoriteItemsComponent {
   productList = inject(ProductListService);
 
   favouriteItems = this.productList.favouriteItems;
+
+  isListView = signal(true)
 
   removeLikedItem(id : number) {
     const itemToRemove = this.favouriteItems().find(item => item.id === id);
@@ -24,5 +27,13 @@ export class FavoriteItemsComponent {
         )
       );
     }
+  }
+
+  toggleGridView() {
+    this.isListView.set(false);
+  }
+
+  toggleListView() {
+    this.isListView.set(true);
   }
 }
