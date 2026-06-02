@@ -1,0 +1,31 @@
+
+.cartItem {
+    transition: all 0.3s ease-in-out;
+    border: 2px solid transparent !important;
+}
+
+.cartItem:hover {
+    transform: translateY(-2px);
+    border-color: var(--violet) !important;
+}
+
+.checkoutBtn {
+    transition: all 0.1s ease-in-out;
+}
+
+.checkoutBtn:active {
+    transform: scale(0.99);
+}
+
+.checkoutBtn:hover {
+    background-color: var(--medium-slate-blue);
+}
+
+.totalPriceMenu {
+    transition: all 0.3s ease-in-out;
+    border: 2px solid transparent !important;
+}
+
+.totalPriceMenu:hover {
+    border-color: var(--plum) !important;
+}

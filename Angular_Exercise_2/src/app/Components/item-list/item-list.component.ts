@@ -1,11 +1,11 @@
 import { AfterViewInit, Component, computed, inject, signal, viewChild } from '@angular/core';
 import { ProductListService } from '../../Services/product-list.service';
 import { FavoriteItemsComponent } from './favorite-items/favorite-items.component';
-import { CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-item-list',
-  imports: [CurrencyPipe],
+  imports: [CurrencyPipe, DatePipe],
   templateUrl: './item-list.component.html',
   styleUrl: './item-list.component.css'
 })
@@ -30,13 +30,34 @@ export class ItemListComponent implements AfterViewInit {
         this.productList.favouriteItems.update(favItems => [...favItems, item])
       } else {
         this.productList.favouriteItems.update(favItems => favItems.filter(favItem => favItem.id !== id));
-      } 
+      }
+    }
+  }
+
+  addToCart(id: number) {
+
+    this.productList.itemsList.update(items => items.map(item => item.id === id ? { ...item, quantity: item.quantity + 1 } : item))
+
+    const updatedItem = this.productList.itemsList().find(item => item.id === id);
+
+    if (updatedItem) {
+      // 3. Update the cart signal
+      this.productList.cartItems.update(cart => {
+        const exists = cart.find(i => i.id === id);
+        if (!exists) {
+          // Add new item to cart
+          return [...cart, updatedItem];
+        } else {
+          // Replace existing item in cart with the one having updated quantity
+          return cart.map(i => i.id === id ? updatedItem : i);
+        }
+      });
     }
   }
 
   sortedProducts = computed(() => {
     const items = this.productList.itemsList();
-    return [...items].sort((a, b) => b.id - a.id);
+    return [...items].sort((a, b) => b.dateAdded < a.dateAdded ? -1 : 1);
   });
 
   ngAfterViewInit() {
@@ -44,4 +65,5 @@ export class ItemListComponent implements AfterViewInit {
       this.isLoading.set(false);
     }, 500);
   }
+
 }

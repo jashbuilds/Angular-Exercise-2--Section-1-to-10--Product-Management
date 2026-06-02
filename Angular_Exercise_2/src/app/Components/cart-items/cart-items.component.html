@@ -1,1 +1,109 @@
-<p class="mt-7 text-center">cart-items works!</p>
+<div class="container-fluid mt-7 mb-5 px-sm-5 px-3">
+    <div class="row">
+
+        <div class="col-12">
+            <div
+                class="d-flex align-items-center justify-content-center justify-content-sm-start gap-4 mt-5">
+                <p
+                    class="h2 text-secondary d-flex justify-content-start align-items-center m-0">Cart
+                    <img src="icons/cart-placeholder.svg"
+                        alt="favourite-icon"
+                        width="30" height="30" class="ms-3" />
+                </p>
+                <p class="m-0 fs-5 text-muted">({{ cartItems().length }}
+                    Item)</p>
+            </div>
+
+        </div>
+
+        @if(cartItems().length === 0) {
+        <div
+            class="d-flex flex-column justify-content-center align-items-center min-vh-60">
+            <img src="icons/empty-cart.svg" alt="empty-cart"
+                width="150"
+                height="150" />
+            <p class="h5 text-secondary mt-3">Your Cart is Empty.</p>
+        </div>
+        } @else {
+        <div class="d-flex flex-md-row flex-column gap-md-3 gap-5 mt-4">
+            <div
+                class="order-md-0 order-1 col-md-8 col-12 d-flex flex-column gap-4  align-items-center">
+                @for(item of cartItems(); track item.id) {
+                <div
+                    class="cartItem d-flex flex-row rounded col-lg-10 col-12 shadow-sm border-0 rounded-4 p-3 mt-md-0">
+                    <div
+                        class="d-flex justify-content-center align-items-center">
+                        <img [src]="item.imageUrl" [alt]="item.name"
+                            class="h-100" width="120"
+                            class="img-fluid rounded-4">
+                    </div>
+                    <div
+                        class="w-100 px-3 d-flex flex-sm-row flex-column justify-content-between align-items-sm-center gap-2">
+                        <div>
+                            <p class="h3">{{ item.name }}</p>
+                            <p>{{ item.price | currency }}</p>
+                            <p class="fs-5 fw-medium m-0">Total: {{ item.price *
+                                item.quantity | currency}}</p>
+
+                        </div>
+
+                        <div class="col-sm-4 col-lg-3 col-6 ms-auto">
+                            <p class="mb-1 fw-medium text-muted">Quantity</p>
+                            <div class="input-group mb-3 text-nowrap">
+                                <button class="input-group-text"
+                                    (click)="decreaseQuantity(item.id)">-</button>
+                                <input type="number" min="0"
+                                    class="form-control"
+                                    aria-label="quantity"
+                                    [(ngModel)]="item.quantity">
+
+                                <button class="input-group-text"
+                                    (click)="increaseQuantity(item.id)">+</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                }
+
+            </div>
+
+            <aside
+                class="col-md-4 order-md-1 order-0">
+                <div
+                    class="px-lg-5 px-md-3 border border-1 rounded-4 p-3 shadow totalPriceMenu">
+                    <p class="text-nowrap fw-semibold fs-3 py-3">Total Price</p>
+                    <div
+                        class="d-flex justify-content-between align-items-center mb-1">
+                        <span>{{ cartItems().length }} Items</span>
+                        <span>{{ totalAmount().toFixed(2) | currency }}</span>
+                    </div>
+
+                    <div
+                        class="d-flex justify-content-between align-items-center mb-4">
+                        <span>Delivery</span>
+                        <span>{{ 10 | currency}}</span>
+                    </div>
+
+                    <hr class="mx-2">
+
+                    <div
+                        class="d-flex justify-content-between align-items-center">
+                        <span class="fw-semibold">Total</span>
+                        <span class="fw-semibold">{{ (totalAmount() +
+                            10).toFixed(2) |
+                            currency}}</span>
+                    </div>
+                    <p class="text-muted">(Inclusive of all taxes)</p>
+
+                    <button
+                        class="border-0 py-2 rounded-4 w-100 my-5 bg-dark-purple text-white checkoutBtn">Checkout</button>
+                </div>
+
+            </aside>
+
+        </div>
+        }
+
+    </div>
+</div>

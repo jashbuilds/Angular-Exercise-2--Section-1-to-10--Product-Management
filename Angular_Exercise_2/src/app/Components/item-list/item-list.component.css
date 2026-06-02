@@ -1,9 +1,5 @@
 /* Custom Classes */
 
-.fs-6 {
-    font-size: 0.875rem;
-}
-
 .addBtn-wrapper {
     display: grid;
     grid-template-rows: 0fr;
@@ -54,11 +50,17 @@
     background: #6c2bc7;
 }
 
+.addBtn-wrapper:active {
+    transform: scale(0.99);
+}
+
 .card {
     transition: all 0.3s ease;
+    border: 2px solid transparent !important;
 }
 
 .card:hover {
+    border-color: var(--violet) !important;
     transform: translateY(-5px);
 }
 

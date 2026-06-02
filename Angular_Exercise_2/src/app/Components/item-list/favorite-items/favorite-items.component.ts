@@ -1,11 +1,11 @@
 import { Component, inject, signal } from '@angular/core';
 import { ProductListService } from '../../../Services/product-list.service';
 import { CurrencyPipe } from '@angular/common';
-import { RouterLinkActive } from "@angular/router";
+import { TooltipDirective } from '../../../Directives/tooltip.directive';
 
 @Component({
   selector: 'app-favorite-items',
-  imports: [CurrencyPipe, RouterLinkActive],
+  imports: [CurrencyPipe, TooltipDirective],
   templateUrl: './favorite-items.component.html',
   styleUrl: './favorite-items.component.css'
 })
@@ -16,8 +16,15 @@ export class FavoriteItemsComponent {
 
   isListView = signal(true)
 
-  removeLikedItem(id : number) {
+  currentItemId = signal<number | null>(null);
+
+  onConfirmation(id: number) {
     const itemToRemove = this.favouriteItems().find(item => item.id === id);
+    this.currentItemId.set(itemToRemove?.id || null);
+  }
+
+  removeLikedItem() {
+    const itemToRemove = this.favouriteItems().find(item => item.id === this.currentItemId());
     
     if (itemToRemove) {
       this.productList.favouriteItems.update(favItems => favItems.filter(favItem => favItem.id !== itemToRemove.id));

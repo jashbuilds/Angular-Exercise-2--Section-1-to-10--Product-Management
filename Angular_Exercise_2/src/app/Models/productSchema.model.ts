@@ -6,5 +6,7 @@ export interface Product {
     description: string;
     imageUrl: string;
     isLiked?: boolean;
-    stock: number
+    stock: number,
+    dateAdded: number | string | Date,
+    quantity: number
 }
