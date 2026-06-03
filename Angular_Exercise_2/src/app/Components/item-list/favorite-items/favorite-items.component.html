@@ -106,13 +106,13 @@
                                 </div>
                             </td>
                             <td
-                                class="fw-medium p-3 align-content-center fs-5 border-0">{{
+                                class="fw-medium p-3 align-content-center fs-5 border-0 text-secondary">{{
                                 item.price.toFixed(2) | currency
                                 }}</td>
                             <td
                                 class="fw-medium p-3 align-content-center border-0">
                                 <div
-                                    class="d-flex align-items-center gap-2 fs-5">
+                                    class="d-flex align-items-center gap-2 fs-5 text-secondary">
                                     {{ item.stock }}
                                     <img src="icons/stock.svg" alt="Stock"
                                         width="20" height="20" class="me-1" />
@@ -210,6 +210,25 @@
                 </button>
                 <button type="button" class="btn btn-danger" (click)="removeLikedItem()">Remove</button>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Container -->
+<div
+    class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div appToast
+        class="toast align-items-center text-white bg-danger border-0"
+        role="alert" aria-live="assertive"
+        aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                Item removed from Favourites!
+            </div>
+            <button type="button"
+                class="btn-close btn-close-white me-2 m-auto"
+                data-bs-dismiss="toast"
+                aria-label="Close"></button>
         </div>
     </div>
 </div>

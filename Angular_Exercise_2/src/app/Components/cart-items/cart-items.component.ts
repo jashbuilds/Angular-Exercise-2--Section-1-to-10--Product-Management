@@ -3,14 +3,29 @@ import { ProductListService } from '../../Services/product-list.service';
 import { CurrencyPipe } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { FormFields } from '../../Models/productSchema.model';
+import { AnimationOptions, LottieComponent } from 'ngx-lottie';
+import { Router } from '@angular/router';
+import { ToastDirective } from '../../Directives/toast.directive';
 
 @Component({
   selector: 'app-cart-items',
-  imports: [CurrencyPipe, FormsModule],
+  imports: [CurrencyPipe, FormsModule, LottieComponent, ToastDirective],
   templateUrl: './cart-items.component.html',
   styleUrl: './cart-items.component.css'
 })
 export class CartItemsComponent {
+
+  options: AnimationOptions = {
+    path: '/assets/order-confirmation-animation-2.json',
+  }
+
+  toast = viewChild(ToastDirective)
+
+  private router = inject(Router)
+
+
+  isOrderConfirmed = signal(false)
+
   offcanvasDrawer = viewChild<ElementRef>('offcanvasDrawer')
   ngForm = viewChild<NgForm>(NgForm)
   productList = inject(ProductListService)
@@ -86,8 +101,7 @@ export class CartItemsComponent {
         items.map(item => item.id === id ? { ...item, quantity: quantity } : item)
       );
     } else {
-
-      this.productList.cartItems.update(items => items.filter(item => item.id !== id));
+      this.removeCartItem()
     }
   }
 
@@ -105,6 +119,29 @@ export class CartItemsComponent {
 
   handleSubmit() {
     this.ngForm()?.reset()
+    this.isOrderConfirmed.set(true)
+    this.cartItems.set([])
+
+    setTimeout(() => {
+      this.isOrderConfirmed.set(false)
+      this.router.navigate(['/'])
+    }, 5000);
+  }
+
+
+  removeCartItem() {
+    const itemToRemove = this.cartItems().find(item => item.id === this.currentItemId());
+    if (itemToRemove) {
+      this.productList.cartItems.update(favItems => favItems.filter(favItem => favItem.id !== itemToRemove.id));
+    }
+
+    this.toast()?.show()
+  }
+
+  currentItemId = signal<number | null>(null)
+
+  onRemoveConfirmation(id: number) {
+    this.currentItemId.set(id);
   }
 
 }

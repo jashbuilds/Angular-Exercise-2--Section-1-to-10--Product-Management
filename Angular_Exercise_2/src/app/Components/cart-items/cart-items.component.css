@@ -43,8 +43,24 @@
     transform: translateX(3px);
 }
 
+.removeIcon {
+    transition: all 0.3s ease-in-out;
+}
+
+.removeIcon:hover {
+    transform: translateY(-2px);
+}
+
+
+
 /* Custom Classes */
 
 .top-15 {
     top: 15%;
+}
+
+.orderAnime {
+    min-height: 20vh !important;
+    width: 30px !important;
+    height: 30px !important;
 }

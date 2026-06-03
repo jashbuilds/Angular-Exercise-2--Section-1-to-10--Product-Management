@@ -1,16 +1,19 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, viewChild } from '@angular/core';
 import { ProductListService } from '../../../Services/product-list.service';
 import { CurrencyPipe } from '@angular/common';
 import { TooltipDirective } from '../../../Directives/tooltip.directive';
+import { ToastDirective } from '../../../Directives/toast.directive';
 
 @Component({
   selector: 'app-favorite-items',
-  imports: [CurrencyPipe, TooltipDirective],
+  imports: [CurrencyPipe, TooltipDirective, ToastDirective],
   templateUrl: './favorite-items.component.html',
   styleUrl: './favorite-items.component.css'
 })
 export class FavoriteItemsComponent {
   productList = inject(ProductListService);
+
+  toast = viewChild(ToastDirective)
 
   favouriteItems = this.productList.favouriteItems;
 
@@ -33,6 +36,8 @@ export class FavoriteItemsComponent {
           item.id === itemToRemove.id ? { ...item, isLiked: false } : item
         )
       );
+
+      this.toast()?.show()
     }
   }
 
