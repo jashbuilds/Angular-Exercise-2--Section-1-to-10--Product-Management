@@ -1,25 +1,31 @@
 <div class="container-fluid mt-7 mb-5 px-sm-5 px-3">
     <div class="row">
         <div class="col-12">
-            <p class="h2 mt-5 text-secondary d-flex justify-content-sm-start justify-content-center align-items-center m-0">Products
+            <p
+                class="h2 mt-5 text-secondary d-flex justify-content-sm-start justify-content-center align-items-center m-0">Products
                 list
-                <img src="icons/product-list-icon.svg" alt="favourite-icon" width="30" height="30" class="ms-2" />
+                <img src="icons/product-list-icon.svg" alt="favourite-icon"
+                    width="30" height="30" class="ms-2" />
             </p>
         </div>
         @for(item of sortedProducts(); track item.id) {
-        <div class="col-md-4 col-sm-6 col-lg-3 col-12 d-flex justify-content-center g-md-4 g-sm-3 g-4">
+        <div
+            class="col-md-4 col-sm-6 col-lg-3 col-12 d-flex justify-content-center g-md-4 g-sm-3 g-4">
 
             @if(isLoading()) {
             <div class="card shadow-lg border-0 p-3 rounded-4 placeholder-glow">
                 <div class="position-relative placeholder rounded-4 bg-light">
-                    <img class="card-img-top img-fluid rounded-4" [class]="isLoading() ? 'placeholder' : ''"
+                    <img class="card-img-top img-fluid rounded-4"
+                        [class]="isLoading() ? 'placeholder' : ''"
                         alt="{{ item.name }} Image" width="320" height="320" />
-                    <button class="btn border-0 bg-transparent position-absolute top-0 end-0"
+                    <button
+                        class="btn border-0 bg-transparent position-absolute top-0 end-0"
                         (click)="toggleLike(item.id)">
                     </button>
                 </div>
 
-                <div class="card-body pt-3 px-1 d-flex flex-column placeholder-glow">
+                <div
+                    class="card-body pt-3 px-1 d-flex flex-column placeholder-glow">
                     <p class="h4 py-2 placeholder bg-light text-white">{{
                         item.name
                         }}</p>
@@ -29,17 +35,21 @@
                     <p class="card-text m-0 fs-4 fw-semibold placeholder">
                         ${{ item.price.toFixed(2) }}
                     </p>
-                
+
                 </div>
             </div>
             } @else {
             <div class="card shadow-lg p-3 rounded-4">
                 <div class="position-relative">
-                    <img src="{{ item.imageUrl }}" class="card-img-top rounded-4 img-fluid"
-                        [class]="isLoading() ? 'placeholder' : ''" alt="{{ item.name }} Image" />
-                    <button class="btn border-0 position-absolute mt-1 top-0 end-0 likeBtn"
+                    <img src="{{ item.imageUrl }}"
+                        class="card-img-top rounded-4 img-fluid"
+                        [class]="isLoading() ? 'placeholder' : ''"
+                        alt="{{ item.name }} Image" />
+                    <button
+                        class="btn border-0 position-absolute mt-1 top-0 end-0 likeBtn"
                         (click)="toggleLike(item.id)">
-                        <img [src]="item.isLiked ? 'icons/favorite-filled-red.svg' : 'icons/favorite-icon-dark.svg'"
+                        <img
+                            [src]="item.isLiked ? 'icons/favorite-filled-red.svg' : 'icons/favorite-icon-dark.svg'"
                             alt="favorite icon" width="23" height="23" />
                     </button>
                     <span
@@ -48,24 +58,31 @@
                 </div>
 
                 <div class="card-body p-0 d-flex flex-column">
-                    <div class="d-flex align-items-center justify-content-between mt-2">
+                    <div
+                        class="d-flex align-items-center justify-content-between mt-2">
                         <p class="h4 card-title">{{ item.name }}</p>
-                        <span class="fs-6 text-muted">{{ item.dateAdded | date:'MM/dd/yyyy' }}</span>
+                        <span class="fs-6 text-muted">{{ item.dateAdded |
+                            date:'MM/dd/yyyy' }}</span>
                     </div>
 
                     <div class="desc-wrapper">
-                        <p class="card-text text-secondary mb-1 itemDescription">{{ item.description }}</p>
+                        <p
+                            class="card-text text-secondary mb-1 itemDescription">{{
+                            item.description }}</p>
                     </div>
 
                     <hr class="mt-auto">
 
-                    <div class="d-flex flex-row justify-content-between align-items-center gap-2 flex-wrap-reverse">
+                    <div
+                        class="d-flex flex-row justify-content-between align-items-center gap-2 flex-wrap-reverse">
 
                         <p class="card-text mt-auto m-0 fs-5 fw-semibold">{{
                             item.price.toFixed(2) | currency }}</p>
 
-                        <div class="text-end fw-medium fs-5 d-flex flex-row align-items-center gap-2">
-                            <img src="icons/stock.svg" alt="stock" width="25" height="25">
+                        <div
+                            class="text-end fw-medium fs-5 d-flex flex-row align-items-center gap-2">
+                            <img src="icons/stock.svg" alt="stock" width="25"
+                                height="25">
                             <span class="m-0">{{ item.stock }}</span>
                         </div>
                     </div>
@@ -77,8 +94,10 @@
                         <button (click)="addToCart(item.id)"
                             class="addBtn bg-medium-slate-blue border-0 text-white w-100 rounded-pill d-flex justify-content-center align-items-center">Add
                             to Cart
-                            <img src="icons/plus.svg" alt="Add to Cart Icon" width="25" height="25" />
+                            <img src="icons/plus.svg" alt="Add to Cart Icon"
+                                width="25" height="25" />
                         </button>
+
                     </div>
                 </div>
             </div>
@@ -87,5 +106,23 @@
         </div>
         }
 
+    </div>
+</div>
+
+<div
+    class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div appToast
+        class="toast align-items-center text-white bg-primary border-0"
+        role="alert" aria-live="assertive"
+        aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                Item added to cart!
+            </div>
+            <button type="button"
+                class="btn-close btn-close-white me-2 m-auto"
+                data-bs-dismiss="toast"
+                aria-label="Close"></button>
+        </div>
     </div>
 </div>

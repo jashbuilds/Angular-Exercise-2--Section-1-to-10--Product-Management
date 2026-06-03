@@ -8,6 +8,8 @@ export class ProductListService {
 
   constructor() { }
 
+  emailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
   favouriteItems = signal<Product[]>([])
 
   cartItems = signal<Product[]>([])

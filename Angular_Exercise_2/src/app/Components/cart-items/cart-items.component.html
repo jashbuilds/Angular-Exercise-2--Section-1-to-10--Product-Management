@@ -5,7 +5,8 @@
             <div
                 class="d-flex align-items-center justify-content-center justify-content-sm-start gap-4 mt-5">
                 <p
-                    class="h2 text-secondary d-flex justify-content-start align-items-center m-0">Cart
+                    class="h2 text-secondary d-flex justify-content-start align-items-center m-0">Your
+                    Cart
                     <img src="icons/cart-placeholder.svg"
                         alt="favourite-icon"
                         width="30" height="30" class="ms-3" />
@@ -27,10 +28,10 @@
         } @else {
         <div class="d-flex flex-md-row flex-column gap-md-3 gap-5 mt-4">
             <div
-                class="order-md-0 order-1 col-md-8 col-12 d-flex flex-column gap-4  align-items-center">
+                class="col-md-8 col-12 d-flex flex-column gap-4 align-items-center border-0 rounded-4 shadow px-3 py-3">
                 @for(item of cartItems(); track item.id) {
                 <div
-                    class="cartItem d-flex flex-row rounded col-lg-10 col-12 shadow-sm border-0 rounded-4 p-3 mt-md-0">
+                    class="cartItem d-flex flex-row rounded col-lg-10 col-12 shadow-sm rounded-4 p-3 mt-md-0">
                     <div
                         class="d-flex justify-content-center align-items-center">
                         <img [src]="item.imageUrl" [alt]="item.name"
@@ -52,10 +53,12 @@
                             <div class="input-group mb-3 text-nowrap">
                                 <button class="input-group-text"
                                     (click)="decreaseQuantity(item.id)">-</button>
-                                <input type="number" min="0"
+                                <input type="number" min="0" #input
                                     class="form-control"
                                     aria-label="quantity"
-                                    [(ngModel)]="item.quantity">
+                                    [value]="item.quantity"
+                                    (keydown)="validateNumber($event)"
+                                    (input)="onManualChange(item.id, input.value)">
 
                                 <button class="input-group-text"
                                     (click)="increaseQuantity(item.id)">+</button>
@@ -69,10 +72,11 @@
             </div>
 
             <aside
-                class="col-md-4 order-md-1 order-0">
+                class="col-md-4">
                 <div
-                    class="px-lg-5 px-md-3 border border-1 rounded-4 p-3 shadow totalPriceMenu">
-                    <p class="text-nowrap fw-semibold fs-3 py-3">Total Price</p>
+                    class="px-lg-4 px-md-3 px-sm-4 px-3 border border-1 rounded-4 shadow totalPriceMenu position-sticky sticky-top top-15">
+                    <p class="text-nowrap fw-semibold fs-3 py-3">Order
+                        Summary</p>
                     <div
                         class="d-flex justify-content-between align-items-center mb-1">
                         <span>{{ cartItems().length }} Items</span>
@@ -96,14 +100,165 @@
                     </div>
                     <p class="text-muted">(Inclusive of all taxes)</p>
 
-                    <button
-                        class="border-0 py-2 rounded-4 w-100 my-5 bg-dark-purple text-white checkoutBtn">Checkout</button>
+                    <button data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasRight"
+                        aria-controls="offcanvasRight"
+                        class="d-flex justify-content-center align-items-center gap-3 border-0 py-2 rounded-4 w-100 my-5 bg-medium-slate-blue bg-gradient text-white checkoutBtn">
+                        <span>Checkout</span>
+                        <img src="icons/arrow_right.svg" class="checkoutArrow"
+                            alt="right-arrow"
+                            width="20" height="20">
+                    </button>
+
                 </div>
 
             </aside>
 
         </div>
         }
+
+    </div>
+</div>
+
+<div class="offcanvas offcanvas-end rounded-start-3" style="max-width: 600px;"
+    #offcanvasDrawer
+    data-bs-backdrop="static"
+    data-bs-scroll="true" tabindex="-1" id="offcanvasRight"
+    aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas-header">
+        <div class="d-flex align-items-center gap-2">
+            <p class="offcanvas-title fs-3 fw-medium"
+                id="offcanvasRightLabel">Order Confirmation</p>
+            <img src="icons/confirmation.svg" alt="confirm-img" width="30"
+                height="30">
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+            aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body px-4">
+        <form #form="ngForm">
+            <p class="text-muted fs-4 fw-medium">Personal Details</p>
+            <div class="form-floating mb-2">
+                <input type="text" class="form-control" name="name"
+                    #nameInput="ngModel"
+                    id="floatingName"
+                    placeholder="e.g. John" [(ngModel)]="formInputFields().name"
+                    required
+                    [class.is-invalid]="nameInput.invalid && nameInput.touched"
+                    [class.is-valid]="nameInput.valid">
+                <label for="floatingName">Name</label>
+                <div class="invalid-feedback">
+                    *Enter Valid Name!
+                </div>
+            </div>
+
+            <div class="form-floating mb-2">
+                <input type="email" class="form-control" id="floatingInput"
+                    #email="ngModel"
+                    name="email"
+                    placeholder="name@example.com"
+                    [(ngModel)]="formInputFields().email" required
+                    [class.is-invalid]="(email.invalid || !isEmailValid()) && email.touched"
+                    [class.is-valid]="email.valid">
+                <label for="floatingInput">Email address</label>
+                <div class="invalid-feedback">
+                    *Enter Valid E-Mail!
+                </div>
+            </div>
+
+            <div class="input-group mb-2">
+                <span class="input-group-text">+91</span>
+                <div class="form-floating"
+                    [class.is-invalid]="contact.invalid && contact.touched"
+                    [class.is-valid]="contact.valid">
+                    <input type="tel" class="form-control" maxlength="10"
+                        #contact="ngModel"
+                        (keydown)="validateNumber($event);"
+                        id="floatingContact" name="contact"
+                        placeholder="0123456789"
+                        maxlength="10"
+                        [(ngModel)]="formInputFields().contact" required>
+                    <label for="floatingContact">Contact No.</label>
+                </div>
+                <div class="invalid-feedback">
+                    *Enter Valid Contact No.!
+                </div>
+            </div>
+
+            <p class="text-muted fw-medium mt-3 fs-4">Address</p>
+            <div class="form-floating mb-2">
+                <input type="text" class="form-control" #area="ngModel"
+                    id="floatingArea" name="area" placeholder="eg. Wall Street"
+                    [(ngModel)]="formInputFields().area" required
+                    [class.is-invalid]="area.invalid && area.touched"
+                    [class.is-valid]="area.valid">
+                <label for="floatingArea">Area</label>
+                <div class="invalid-feedback">
+                    *Enter Valid Area!
+                </div>
+            </div>
+
+            <div class="form-floating mb-2">
+                <input type="text" class="form-control" #city="ngModel"
+                    id="floatingCity" name="city" placeholder="eg. NYC"
+                    [(ngModel)]="formInputFields().city" required
+                    [class.is-invalid]="city.invalid && city.touched"
+                    [class.is-valid]="city.valid">
+                <label for="floatingCity">City</label>
+                <div class="invalid-feedback">
+                    *Enter Valid City!
+                </div>
+            </div>
+
+            <div class="form-floating mb-2">
+                <input type="text" class="form-control" #state="ngModel"
+                    id="floatingState" name="state" placeholder="eg. NYC"
+                    [(ngModel)]="formInputFields().state" required
+                    [class.is-invalid]="state.invalid && state.touched"
+                    [class.is-valid]="state.valid">
+                <label for="floatingState">State</label>
+                <div class="invalid-feedback">
+                    *Enter Valid State!
+                </div>
+            </div>
+
+            <div
+                class="d-flex justify-content-end align-items-center gap-2 mt-3">
+                <button class="btn btn-outline-secondary py-2"
+                    data-bs-dismiss="offcanvas">Cancel</button>
+                <button
+                    class="btn text-white border-0 submitBtn px-3 py-2 align-content-center rounded-2 bg-gradient cursor-pointer"
+                    [disabled]="ngForm()?.invalid" (click)="handleSubmit()"
+                    data-bs-dismiss="offcanvas">Submit</button>
+            </div>
+        </form>
+
+        <hr>
+
+        <p class="text-muted fs-4 fw-medium mt-3">Your Bag</p>
+        <div class="d-flex flex-column align-items-center gap-2">
+            @for(item of cartItems(); track item.id) {
+            <div
+                class="d-flex flex-row align-items-center rounded shadow-sm rounded-4 p-3 mt-md-0 border border-1 border-info w-100">
+                <div
+                    class="d-flex justify-content-center align-items-center">
+                    <img [src]="item.imageUrl" [alt]="item.name"
+                        class="h-100" width="70"
+                        class="img-fluid rounded-4">
+                </div>
+                <div
+                    class="w-100 px-3 d-flex flex-sm-row flex-column justify-content-between align-items-sm-center gap-2">
+                    <div>
+                        <p class="h4 fw-medium">{{ item.name }}</p>
+                        <p class="h5 fw-medium text-muted">Quantity: {{ item.quantity
+                            }}</p>
+
+                    </div>
+
+                </div>
+            </div>
+            }
+        </div>
 
     </div>
 </div>

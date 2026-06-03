@@ -1,7 +1,8 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { ProductListService } from '../../Services/product-list.service';
 import { CurrencyPipe } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
+import { FormFields } from '../../Models/productSchema.model';
 
 @Component({
   selector: 'app-cart-items',
@@ -10,7 +11,38 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './cart-items.component.css'
 })
 export class CartItemsComponent {
+  offcanvasDrawer = viewChild<ElementRef>('offcanvasDrawer')
+  ngForm = viewChild<NgForm>(NgForm)
   productList = inject(ProductListService)
+
+  nameInput = viewChild<ElementRef<HTMLInputElement>>('nameInput')
+
+  constructor() {
+    effect((onCleanup) => {
+      const offCanvas = this.offcanvasDrawer()?.nativeElement;
+
+      if (offCanvas) {
+        const handleHidden = () => {
+          this.ngForm()?.reset()
+        }
+
+        offCanvas.addEventListener('hidden.bs.offcanvas', handleHidden);
+
+        onCleanup(() => {
+          offCanvas.removeEventListener('hidden.bs.offcanvas', handleHidden);
+        })
+      }
+    })
+  }
+
+  formInputFields = signal<FormFields>({
+    name: '',
+    email: '',
+    contact: null,
+    area: '',
+    city: '',
+    state: ''
+  })
 
   cartItems = this.productList.cartItems
   totalAmount = computed(() => {
@@ -19,6 +51,7 @@ export class CartItemsComponent {
     }, 0)
   })
 
+  // Helper function to Increase the Quantity
   increaseQuantity(id: number) {
 
     const targetData = this.productList.itemsList().find(item => item.id === id)
@@ -29,6 +62,7 @@ export class CartItemsComponent {
     }
   }
 
+  // Helper function to Decrease the Quantity
   decreaseQuantity(id: number) {
 
     const targetData = this.productList.itemsList().find(item => item.id === id)
@@ -39,6 +73,38 @@ export class CartItemsComponent {
     } else if (targetData?.quantity === 1) {
       this.productList.cartItems.update(items => items.filter(item => item.id !== id))
     }
+  }
+
+  // Helper function that detects Manual change in quantity and recalculate 'Total' Accordingly
+  onManualChange(id: number, newValue: string) {
+
+    const quantity = parseInt(newValue);
+
+    if (quantity >= 1) {
+
+      this.productList.cartItems.update(items =>
+        items.map(item => item.id === id ? { ...item, quantity: quantity } : item)
+      );
+    } else {
+
+      this.productList.cartItems.update(items => items.filter(item => item.id !== id));
+    }
+  }
+
+  validateNumber(e: KeyboardEvent) {
+    const pattern = /^[0-9]$/;
+
+    if (!pattern.test(e.key) && !['Backspace', 'Tab', 'Delete', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+      e.preventDefault()
+    }
+  }
+
+  isEmailValid() {
+    return this.productList.emailRegExp.test(this.formInputFields().email);
+  }
+
+  handleSubmit() {
+    this.ngForm()?.reset()
   }
 
 }

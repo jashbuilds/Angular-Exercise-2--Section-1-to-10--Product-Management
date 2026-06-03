@@ -2,14 +2,18 @@ import { AfterViewInit, Component, computed, inject, signal, viewChild } from '@
 import { ProductListService } from '../../Services/product-list.service';
 import { FavoriteItemsComponent } from './favorite-items/favorite-items.component';
 import { CurrencyPipe, DatePipe } from '@angular/common';
+import { ToastDirective } from '../../Directives/toast.directive';
 
 @Component({
   selector: 'app-item-list',
-  imports: [CurrencyPipe, DatePipe],
+  imports: [CurrencyPipe, DatePipe, ToastDirective],
   templateUrl: './item-list.component.html',
   styleUrl: './item-list.component.css'
 })
 export class ItemListComponent implements AfterViewInit {
+
+  toast = viewChild(ToastDirective)
+
   productList = inject(ProductListService);
   favouriteItemsComponent = viewChild(FavoriteItemsComponent);
   DateNow = signal(Date.now());
@@ -41,18 +45,18 @@ export class ItemListComponent implements AfterViewInit {
     const updatedItem = this.productList.itemsList().find(item => item.id === id);
 
     if (updatedItem) {
-      // 3. Update the cart signal
+      
       this.productList.cartItems.update(cart => {
         const exists = cart.find(i => i.id === id);
         if (!exists) {
-          // Add new item to cart
           return [...cart, updatedItem];
         } else {
-          // Replace existing item in cart with the one having updated quantity
           return cart.map(i => i.id === id ? updatedItem : i);
         }
       });
+      this.toast()?.show()
     }
+
   }
 
   sortedProducts = computed(() => {
@@ -65,5 +69,4 @@ export class ItemListComponent implements AfterViewInit {
       this.isLoading.set(false);
     }, 500);
   }
-
 }
