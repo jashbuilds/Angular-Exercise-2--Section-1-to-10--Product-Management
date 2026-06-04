@@ -19,19 +19,19 @@
         </div>
 
         <button class="navbar-toggler border border-0" type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarToggler"
             aria-controls="navbarToggler" aria-expanded="false"
-            aria-label="Toggle navigation">
+            aria-label="Toggle navigation"
+            (click)="isMenuCollapsed.set(!isMenuCollapsed())"
+            [attr.aria-expanded]="!isMenuCollapsed()">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarToggler" #nav>
+        <div class="collapse navbar-collapse" id="navbarToggler" #nav [class.show]="!isMenuCollapsed()" [class.collapse]="isMenuCollapsed()">
             <ul
                 class="navbar-nav ms-auto mb-2 mt-3 mt-sm-0 mb-lg-0 d-flex flex-row justify-content-around align-items-center gap-3">
                 <li class="nav-item">
                     <a class="nav-link" routerLinkActive
                         #rlaHome="routerLinkActive"
-                        (click)="nav.classList.remove('show')"
+                        (click)="isMenuCollapsed.set(true)"
                         routerLink="/items">
                         <img
                             [src]="rlaHome.isActive ? 'icons/home-filled.svg' : 'icons/home-outlined.svg' "
@@ -43,7 +43,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page"
-                        (click)="nav.classList.remove('show')"
+                        (click)="isMenuCollapsed.set(true)"
                         routerLink="/favourites" routerLinkActive
                         #rla="routerLinkActive">
                         <img
@@ -63,7 +63,7 @@
                 <li class="nav-item">
                     <a class="nav-link" routerLink="/cart" routerLinkActive
                         #rlaCart="routerLinkActive"
-                        (click)="nav.classList.remove('show')">
+                        (click)="isMenuCollapsed.set(true)">
                         <img
                             [src]="rlaCart.isActive ? 'icons/cart-icon-filled.svg' : 'icons/cart-icon.svg'"
                             alt="Cart Icon"

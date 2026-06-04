@@ -18,7 +18,6 @@ export class FavoriteItemsComponent {
   favouriteItems = this.productList.favouriteItems;
 
   isListView = signal(true)
-
   currentItemId = signal<number | null>(null);
 
   onConfirmation(id: number) {
@@ -41,10 +40,12 @@ export class FavoriteItemsComponent {
     }
   }
 
+  // helper function to toggle grid view
   toggleGridView() {
     this.isListView.set(false);
   }
 
+  // helper function to toggle grid view
   toggleListView() {
     this.isListView.set(true);
   }

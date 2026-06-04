@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ProductListService } from '../../Services/product-list.service';
 import { TooltipDirective } from "../../Directives/tooltip.directive";
@@ -11,6 +11,7 @@ import { TooltipDirective } from "../../Directives/tooltip.directive";
 })
 export class NavigationComponent {
   productList = inject(ProductListService);
+  isMenuCollapsed = signal(true)
 
   favouriteItems = this.productList.favouriteItems;
   cartItems = this.productList.cartItems

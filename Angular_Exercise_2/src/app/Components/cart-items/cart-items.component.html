@@ -1,7 +1,8 @@
 @if(isOrderConfirmed()) {
+<!-- This animation Div will be shown whenever Submit happens -->
 <div class="d-flex justify-content-center align-items-center min-vh-100">
-    <ng-lottie [options]="options" class width="300px"
-        height="300px"></ng-lottie>
+    <ng-lottie [options]="options" class width="400px"
+        height="400px"></ng-lottie>
 </div>
 } @else {
 <div class="container-fluid mt-7 mb-5 px-sm-5 px-3">
@@ -32,12 +33,14 @@
             <p class="h5 text-secondary mt-3">Your Cart is Empty.</p>
         </div>
         } @else {
+
+        <!-- UI to show cart items -->
         <div class="d-flex flex-md-row flex-column gap-md-3 gap-5 mt-4">
             <div
                 class="col-md-8 col-12 d-flex flex-column gap-4 align-items-center border-0 rounded-4 shadow px-3 py-3">
                 @for(item of cartItems(); track item.id) {
                 <div
-                    class="cartItem d-flex flex-row rounded col-lg-10 col-12 shadow-sm rounded-4 p-3 mt-md-0">
+                    class="cartItem d-flex flex-row rounded col-lg-12 col-xl-10 col-12 shadow-sm rounded-4 p-3 mt-md-0">
                     <div
                         class="d-flex justify-content-center align-items-center">
                         <img [src]="item.imageUrl" [alt]="item.name"
@@ -45,7 +48,7 @@
                             class="img-fluid rounded-4">
                     </div>
                     <div
-                        class="w-100 px-3 d-flex flex-sm-row flex-column justify-content-between align-items-sm-center gap-2">
+                        class="w-100 px-3 d-flex flex-sm-row justify-content-between align-items-sm-center gap-2">
                         <div>
                             <p class="h3">{{ item.name }}</p>
                             <p>{{ item.price | currency }}</p>
@@ -54,9 +57,9 @@
 
                         </div>
 
-                        <div class="col-sm-4 col-lg-3 col-6 ms-auto">
+                        <div class="col-sm-4 col-lg-3 col-md-6 col-5 ms-auto align-content-center">
                             <p class="mb-1 fw-medium text-muted">Quantity</p>
-                            <div class="input-group mb-3 text-nowrap">
+                            <div class="input-group mb-3">
                                 <button class="input-group-text"
                                     (click)="decreaseQuantity(item.id)">-</button>
                                 <input type="number" min="0" #input
@@ -87,6 +90,7 @@
 
             </div>
 
+            <!-- UI to show order summary DIV -->
             <aside
                 class="col-md-4">
                 <div
@@ -119,7 +123,7 @@
                     <button data-bs-toggle="offcanvas"
                         data-bs-target="#offcanvasRight"
                         aria-controls="offcanvasRight"
-                        class="d-flex justify-content-center align-items-center gap-3 border-0 py-2 rounded-4 w-100 my-5 bg-medium-slate-blue bg-gradient text-white checkoutBtn">
+                        class="d-flex justify-content-center align-items-center gap-2 border-0 py-2 rounded-4 w-100 my-5 bg-medium-slate-blue bg-gradient text-white checkoutBtn">
                         <span>Checkout</span>
                         <img src="icons/arrow_right.svg" class="checkoutArrow"
                             alt="right-arrow"
@@ -137,7 +141,8 @@
 </div>
 }
 
-<div class="offcanvas offcanvas-end rounded-start-3" style="max-width: 600px;"
+<!-- Offcanvas - Drawer -->
+<div class="offcanvas offcanvas-end rounded-start-3"
     #offcanvasDrawer
     data-bs-backdrop="static"
     data-bs-scroll="true" tabindex="-1" id="offcanvasRight"
@@ -245,8 +250,7 @@
                     data-bs-dismiss="offcanvas">Cancel</button>
                 <button
                     class="btn text-white border-0 submitBtn px-3 py-2 align-content-center rounded-2 bg-gradient cursor-pointer"
-                    [disabled]="ngForm()?.invalid" (click)="handleSubmit()"
-                    data-bs-dismiss="offcanvas">Submit</button>
+                    [disabled]="ngForm()?.invalid" (click)="handleSubmit()">Submit</button>
             </div>
         </form>
 

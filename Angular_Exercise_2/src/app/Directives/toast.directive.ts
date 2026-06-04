@@ -6,7 +6,7 @@ import * as bootstrap from 'bootstrap'
 })
 export class ToastDirective implements OnInit {
 
-  private toastInstance: any;
+  private toastInstance!: bootstrap.Toast;
 
   constructor(private el: ElementRef) { }
 

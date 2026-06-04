@@ -6,6 +6,7 @@ import { FormFields } from '../../Models/productSchema.model';
 import { AnimationOptions, LottieComponent } from 'ngx-lottie';
 import { Router } from '@angular/router';
 import { ToastDirective } from '../../Directives/toast.directive';
+import * as bootstrap from 'bootstrap'
 
 @Component({
   selector: 'app-cart-items',
@@ -20,19 +21,26 @@ export class CartItemsComponent {
   }
 
   toast = viewChild(ToastDirective)
-
-  private router = inject(Router)
-
-
-  isOrderConfirmed = signal(false)
-
   offcanvasDrawer = viewChild<ElementRef>('offcanvasDrawer')
   ngForm = viewChild<NgForm>(NgForm)
-  productList = inject(ProductListService)
-
   nameInput = viewChild<ElementRef<HTMLInputElement>>('nameInput')
 
+  private router = inject(Router)
+  productList = inject(ProductListService)
+
+  currentItemId = signal<number | null>(null)
+  isOrderConfirmed = signal(false)
+  formInputFields = signal<FormFields>({
+    name: '',
+    email: '',
+    contact: null,
+    area: '',
+    city: '',
+    state: ''
+  })
+
   constructor() {
+    // Effect will run whenever the offcanvas hides, so Angular can reset the Form.
     effect((onCleanup) => {
       const offCanvas = this.offcanvasDrawer()?.nativeElement;
 
@@ -49,15 +57,6 @@ export class CartItemsComponent {
       }
     })
   }
-
-  formInputFields = signal<FormFields>({
-    name: '',
-    email: '',
-    contact: null,
-    area: '',
-    city: '',
-    state: ''
-  })
 
   cartItems = this.productList.cartItems
   totalAmount = computed(() => {
@@ -87,6 +86,7 @@ export class CartItemsComponent {
       this.productList.cartItems.update(items => items.map(item => item.id === id ? { ...item, quantity: item.quantity - 1 } : item))
     } else if (targetData?.quantity === 1) {
       this.productList.cartItems.update(items => items.filter(item => item.id !== id))
+      this.toast()?.show()
     }
   }
 
@@ -105,6 +105,7 @@ export class CartItemsComponent {
     }
   }
 
+  // helper function to prevent chars in input
   validateNumber(e: KeyboardEvent) {
     const pattern = /^[0-9]$/;
 
@@ -113,22 +114,38 @@ export class CartItemsComponent {
     }
   }
 
+  // helper function to validate E-mail ID
   isEmailValid() {
     return this.productList.emailRegExp.test(this.formInputFields().email);
   }
 
+  // Logic to handle submit by resetting Form (show animation and redirect to Home Page)
   handleSubmit() {
-    this.ngForm()?.reset()
-    this.isOrderConfirmed.set(true)
-    this.cartItems.set([])
+    if (this.ngForm()?.valid) {
 
-    setTimeout(() => {
-      this.isOrderConfirmed.set(false)
-      this.router.navigate(['/'])
-    }, 5000);
+      const offcanvasElement = this.offcanvasDrawer()?.nativeElement;
+
+      if (offcanvasElement) {
+        const instance = bootstrap.Offcanvas.getOrCreateInstance(offcanvasElement)
+        instance.hide()
+        document.body.classList.remove('modal-open', 'offcanvas-open');
+        document.querySelectorAll('.offcanvas-backdrop').forEach(el => el.remove());
+      }
+
+      this.ngForm()?.reset()
+      this.isOrderConfirmed.set(true)
+      this.cartItems.set([])
+      setTimeout(() => {
+        this.isOrderConfirmed.set(false)
+        this.router.navigate(['/'])
+      }, 4000);
+    } else {
+      this.ngForm()?.form.markAllAsTouched()
+    }
+
   }
 
-
+  // Helper function to remove Cart Item from Cart.
   removeCartItem() {
     const itemToRemove = this.cartItems().find(item => item.id === this.currentItemId());
     if (itemToRemove) {
@@ -137,8 +154,6 @@ export class CartItemsComponent {
 
     this.toast()?.show()
   }
-
-  currentItemId = signal<number | null>(null)
 
   onRemoveConfirmation(id: number) {
     this.currentItemId.set(id);

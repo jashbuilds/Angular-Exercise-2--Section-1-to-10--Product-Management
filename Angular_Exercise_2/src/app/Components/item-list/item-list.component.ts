@@ -13,13 +13,13 @@ import { ToastDirective } from '../../Directives/toast.directive';
 export class ItemListComponent implements AfterViewInit {
 
   toast = viewChild(ToastDirective)
-
-  productList = inject(ProductListService);
   favouriteItemsComponent = viewChild(FavoriteItemsComponent);
+
   DateNow = signal(Date.now());
   isLoading = signal(true);
-
   isLiked = signal(false);
+  
+  productList = inject(ProductListService);
 
   toggleLike(id: number) {
     this.productList.itemsList.update(items =>

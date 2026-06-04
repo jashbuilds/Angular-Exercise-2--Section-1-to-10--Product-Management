@@ -12,10 +12,11 @@
         <div
             class="col-md-4 col-sm-6 col-lg-3 col-12 d-flex justify-content-center g-md-4 g-sm-3 g-4">
 
+            <!-- Placeholder for card view -->
             @if(isLoading()) {
             <div class="card shadow-lg border-0 p-3 rounded-4 placeholder-glow">
                 <div class="position-relative placeholder rounded-4 bg-light">
-                    <img class="card-img-top img-fluid rounded-4"
+                    <img class="card-img-top img-fluid rounded-4 placeholder"
                         [class]="isLoading() ? 'placeholder' : ''"
                         alt="{{ item.name }} Image" width="320" height="320" />
                     <button
@@ -39,6 +40,8 @@
                 </div>
             </div>
             } @else {
+
+            <!-- Actual structure of Item Cards -->
             <div class="card shadow-lg p-3 rounded-4">
                 <div class="position-relative">
                     <img src="{{ item.imageUrl }}"
@@ -92,7 +95,7 @@
                     class="card-footer mt-2 p-0 border-0 bg-transparent d-flex justify-content-between align-itms-center gap-2">
                     <div class="addBtn-wrapper w-100">
                         <button (click)="addToCart(item.id)"
-                            class="addBtn bg-medium-slate-blue border-0 text-white w-100 rounded-pill d-flex justify-content-center align-items-center">Add
+                            class="addBtn bg-medium-slate-blue border-0 text-white w-100 rounded-4 d-flex justify-content-center align-items-center">Add
                             to Cart
                             <img src="icons/plus.svg" alt="Add to Cart Icon"
                                 width="25" height="25" />
@@ -109,6 +112,7 @@
     </div>
 </div>
 
+<!-- Toast Container -->
 <div
     class="toast-container position-fixed bottom-0 end-0 p-3">
     <div appToast
